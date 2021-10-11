@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var errores: Int = 0
     private var aciertos: Int = 0
     private val letras = "abcdefghijklmnñopqrstuvwxyz".uppercase().toCharArray()
-    private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
+    //private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
     private var palabra = ""
     private var number: Int = 0
     private lateinit var letrasPalabra: MutableList<String>
@@ -32,12 +32,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
     private fun newGame() {
         errores = 0
         aciertos = 0
-        listaPalabras.shuffle()
-        palabra = listaPalabras[0]
+        val bundle = intent.extras
+        palabra= bundle?.getString("palabra").toString().uppercase()
         number = palabra.length
         letrasPalabra = MutableList<String>(palabra.length) {i -> ""}
         showPalabra = MutableList(palabra.length) { i -> "__"}
@@ -100,9 +99,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(aciertos == number) {
             builder.setTitle("Has ganado!!")
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
-                newGame()
-            }
-            builder.setNegativeButton("Salir") { dialog, which ->
                 finish()
             }
             builder.show()
@@ -137,9 +133,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(errores == 9) {
             builder.setTitle("Has perdido. La palabra era ${palabra.lowercase()}")
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
-                newGame()
-            }
-            builder.setNegativeButton("Salir") { dialog, which ->
                 finish()
             }
             builder.show()
