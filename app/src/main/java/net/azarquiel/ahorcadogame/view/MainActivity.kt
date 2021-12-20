@@ -1,12 +1,19 @@
-package net.azarquiel.ahorcadogame
+package net.azarquiel.ahorcadogame.view
 
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import net.azarquiel.ahorcadogame.R
+import net.azarquiel.ahorcadogame.model.Espanol
+import net.azarquiel.ahorcadogame.model.PalabrasDB
+import net.azarquiel.ahorcadogame.viewmodel.EspanolViewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -16,8 +23,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var errores: Int = 0
     private var aciertos: Int = 0
     private val letras = "abcdefghijklmnñopqrstuvwxyz".uppercase().toCharArray()
-    private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
     private var palabra = ""
+    private var palabrasEspanol: List<Espanol> = emptyList()
     private var number: Int = 0
     private var oneplayer: Boolean = false
     private lateinit var letrasPalabra: MutableList<String>
@@ -30,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         lv = findViewById(R.id.lv)
         ivErrores = findViewById(R.id.ivErrores)
         tvPalabra = findViewById(R.id.tvPalabra)
+
         newGame()
 
     }
@@ -41,7 +49,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         palabra= bundle?.getString("palabra").toString().uppercase()
         if(palabra == "ONE-PLAYER-MODE"){
             oneplayer = true
-            palabra = listaPalabras[(0..listaPalabras.size).random()]
+            palabra = "MODIFICAR ESTO"
+
+        } else{
+            oneplayer = false
         }
         number = palabra.length
         letrasPalabra = MutableList<String>(palabra.length) {i -> ""}

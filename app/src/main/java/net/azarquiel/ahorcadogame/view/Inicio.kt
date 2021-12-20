@@ -1,10 +1,11 @@
-package net.azarquiel.ahorcadogame
+package net.azarquiel.ahorcadogame.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import net.azarquiel.ahorcadogame.R
 
 class Inicio : AppCompatActivity() {
     private var palabra: String = ""
