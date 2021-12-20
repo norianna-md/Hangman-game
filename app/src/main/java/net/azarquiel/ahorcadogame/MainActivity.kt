@@ -1,5 +1,6 @@
 package net.azarquiel.ahorcadogame
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var errores: Int = 0
     private var aciertos: Int = 0
     private val letras = "abcdefghijklmnñopqrstuvwxyz".uppercase().toCharArray()
-    //private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
+    private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
     private var palabra = ""
     private var number: Int = 0
     private lateinit var letrasPalabra: MutableList<String>
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         aciertos = 0
         val bundle = intent.extras
         palabra= bundle?.getString("palabra").toString().uppercase()
+        if(palabra == "ONE-PLAYER-MODE"){
+            palabra = listaPalabras[(0..listaPalabras.size).random()]
+        }
         number = palabra.length
         letrasPalabra = MutableList<String>(palabra.length) {i -> ""}
         showPalabra = MutableList(palabra.length) { i -> "__"}
@@ -101,6 +105,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
                 finish()
             }
+            builder.setNegativeButton("Salir") { dialog, which ->
+                val intento = Intent(this, Menu::class.java)
+                startActivity(intento)
+            }
             builder.show()
         }
     }
@@ -134,6 +142,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             builder.setTitle("Has perdido. La palabra era ${palabra.lowercase()}")
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
                 finish()
+            }
+            builder.setNegativeButton("Salir") { dialog, which ->
+                val intento = Intent(this, Menu::class.java)
+                startActivity(intento)
             }
             builder.show()
         }
