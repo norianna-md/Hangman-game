@@ -1,4 +1,4 @@
-# Hangman-game
+# Hangman (Game)
 
 See this in: [Español](README.md)
 
