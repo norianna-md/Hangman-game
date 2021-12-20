@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val listaPalabras = arrayListOf<String>("CARAMELO", "BALONCESTO", "VENTANA", "GLADIADOR", "PECULIARIDAD", "NOVEDAD", "ÑU", "JUEGO", "AHORACADO", "KILOGRAMO", "AZUL", "COLORES", "VIOLETA", "CAMALEON", "ARISTOCRACIA")
     private var palabra = ""
     private var number: Int = 0
+    private var oneplayer: Boolean = false
     private lateinit var letrasPalabra: MutableList<String>
     private lateinit var showPalabra: MutableList<String>
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val bundle = intent.extras
         palabra= bundle?.getString("palabra").toString().uppercase()
         if(palabra == "ONE-PLAYER-MODE"){
+            oneplayer = true
             palabra = listaPalabras[(0..listaPalabras.size).random()]
         }
         number = palabra.length
@@ -103,7 +105,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(aciertos == number) {
             builder.setTitle("Has ganado!!")
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
-                finish()
+                if (oneplayer)
+                    newGame()
+                else
+                    finish()
             }
             builder.setNegativeButton("Salir") { dialog, which ->
                 val intento = Intent(this, Menu::class.java)
@@ -141,7 +146,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if(errores == 9) {
             builder.setTitle("Has perdido. La palabra era ${palabra.lowercase()}")
             builder.setPositiveButton("Nueva jugada") { dialog, which ->
-                finish()
+                if (oneplayer)
+                    newGame()
+                else
+                    finish()
             }
             builder.setNegativeButton("Salir") { dialog, which ->
                 val intento = Intent(this, Menu::class.java)
