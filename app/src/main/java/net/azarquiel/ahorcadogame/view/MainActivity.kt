@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.azarquiel.ahorcadogame.R
 import net.azarquiel.ahorcadogame.model.Espanol
-import net.azarquiel.ahorcadogame.model.PalabrasDB
 import net.azarquiel.ahorcadogame.viewmodel.EspanolViewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -25,6 +23,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var errores: Int = 0
     private var aciertos: Int = 0
     private val letras = "abcdefghijklmnñopqrstuvwxyz".uppercase().toCharArray()
+    private val letrasEspeciales = "áéíóú".uppercase().toCharArray()
     private var palabra = ""
     private var palabrasEspanol: List<Espanol> = emptyList()
     private var number: Int = 0
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             oneplayer = false
         }
         number = palabra.length
-        letrasPalabra = MutableList<String>(palabra.length) {i -> ""}
+        letrasPalabra = MutableList(palabra.length) {i -> ""}
         showPalabra = MutableList(palabra.length) { i -> "__"}
         tvPalabra.text = showPalabra.toMutableList().joinToString(separator = " ")
         ivErrores.setBackgroundResource(R.color.white)
@@ -98,8 +97,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val btnPulsado = v as Button
+        var letra = btnPulsado.tag.toString()
 
-        val letra = btnPulsado.tag.toString()
+        var isTilde = false
+        var letraTilde = 0
+
+        for (i in letrasEspeciales.indices){
+            if (letrasPalabra.contains(letrasEspeciales[i].toString())){
+                isTilde = true
+                letraTilde = i
+            }
+        }
+
+        if ((letra == "A" ||letra == "E" ||letra == "I" ||letra == "O" ||letra == "U") && isTilde){
+            when(letraTilde){
+                0 -> if (letra == "A") letra = "Á"
+                1 -> if (letra == "E") letra = "É"
+                2 -> if (letra == "I") letra = "Í"
+                3 -> if (letra == "O") letra = "Ó"
+                4 -> if (letra == "U") letra = "Ú"
+            }
+        }
 
         if (letra in letrasPalabra) {
             btnPulsado.setTextColor(Color.GREEN)
