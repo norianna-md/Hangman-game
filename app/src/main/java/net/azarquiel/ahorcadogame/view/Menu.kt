@@ -31,13 +31,16 @@ class Menu : AppCompatActivity() {
 
         getData()
 
+
+
         btnoneplayer = findViewById<Button>(R.id.btnoneplayer)
         btnmultiplayer = findViewById<Button>(R.id.btnmultiplayer)
 
 
+
         btnoneplayer.setOnClickListener {
             val intento = Intent(this, MainActivity::class.java)
-            intento.putExtra("palabra", palabra) //para enviar parámetros a otra activity
+            intento.putExtra("palabra", "1234") //para enviar parámetros a otra activity
             startActivity(intento)
         }
 

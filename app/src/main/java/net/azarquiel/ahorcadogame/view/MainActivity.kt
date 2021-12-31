@@ -8,8 +8,10 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.azarquiel.ahorcadogame.R
 import net.azarquiel.ahorcadogame.model.Espanol
 import net.azarquiel.ahorcadogame.model.PalabrasDB
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var oneplayer: Boolean = false
     private lateinit var letrasPalabra: MutableList<String>
     private lateinit var showPalabra: MutableList<String>
+    private lateinit var espanolViewModel: EspanolViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ivErrores = findViewById(R.id.ivErrores)
         tvPalabra = findViewById(R.id.tvPalabra)
 
-        newGame()
+
+        espanolViewModel = ViewModelProvider(this).get(EspanolViewModel::class.java)
+        GlobalScope.launch(){
+            palabrasEspanol = espanolViewModel.getAllPalabras()
+            launch(Dispatchers.Main){
+                newGame()
+            }
+        }
+
+        //newGame()
 
     }
 
@@ -47,9 +59,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         aciertos = 0
         val bundle = intent.extras
         palabra= bundle?.getString("palabra").toString().uppercase()
-        if(palabra == "ONE-PLAYER-MODE"){
+        if(palabra == "1234"){
             oneplayer = true
-            palabra = "MODIFICAR ESTO"
+            palabra = palabrasEspanol[(palabrasEspanol.indices).random()].palabra.uppercase()
 
         } else{
             oneplayer = false
