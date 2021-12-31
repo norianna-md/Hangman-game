@@ -49,9 +49,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 newGame()
             }
         }
-
-        //newGame()
-
     }
 
     private fun newGame() {
